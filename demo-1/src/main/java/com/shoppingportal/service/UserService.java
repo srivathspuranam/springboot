@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
@@ -79,6 +80,12 @@ public class UserService {
 
 	// -------------------------------------USER-----------------------------------------------------------------------------------
 
+	private UserBean getUserBean() {
+		UserDetailsImpl userDetailsImpl = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
+				.getPrincipal();
+		return ur.findById(userDetailsImpl.getId()).get();
+	}
+
 //	public ModelAndView login(String name, String password, ModelAndView model, HttpSession session) {
 //		UserBean user = ur.findByNameAndPassword(name, password);
 //		session.setAttribute("user", user);
@@ -92,21 +99,20 @@ public class UserService {
 //		return model;
 //	}
 
-	public ModelAndView logout(ModelAndView model, HttpServletRequest request) {
-		model.setViewName("LoginPage");
-		HttpSession session = request.getSession(false);
-		if (session != null) {
-			session.invalidate();
-			model.addObject("message", "You are successfully logged out");
-		} else {
-			model.addObject("message", "login again");
-		}
-		return model;
-	}
+//	public ModelAndView logout(ModelAndView model) {
+//		model.setViewName("LoginPage");
+//		HttpSession session = request.getSession(false);
+//		if (session != null) {
+//			session.invalidate();
+//			model.addObject("message", "You are successfully logged out");
+//		} else {
+//			model.addObject("message", "login again");
+//		}
+//		return model;
+//	}
 
-	public ModelAndView register(UserBean ub, ModelAndView model, HttpServletRequest request) {
-		HttpSession session = request.getSession(false);
-		UserBean user = (UserBean) session.getAttribute("user");
+	public ModelAndView register(UserBean ub, ModelAndView model) {
+		UserBean user = getUserBean();
 		if (user == null) {
 			model.setViewName("RegisterPage");
 			List<UserBean> userdata = ur.findByMobilenumber(ub.getMobilenumber());
@@ -126,7 +132,6 @@ public class UserService {
 			}
 		} else {
 			ur.save(ub);
-			session.setAttribute("user", ub);
 			model.addObject("message", "Profile is successfully updated");
 			model.setViewName("Profile");
 		}
@@ -134,7 +139,7 @@ public class UserService {
 		return model;
 	}
 
-	public ModelAndView dashboard(ModelAndView model, HttpServletRequest request) {
+	public ModelAndView dashboard(ModelAndView model) {
 		HttpSession session = request.getSession(false);
 		if (session == null) {
 			model.setViewName("LoginPage");
@@ -145,7 +150,7 @@ public class UserService {
 		return model;
 	}
 
-	public ModelAndView profile(UserBean ub, ModelAndView model, HttpServletRequest request) {
+	public ModelAndView profile(UserBean ub, ModelAndView model) {
 		HttpSession session = request.getSession(false);
 		if (session != null) {
 			model.setViewName("Profile");
@@ -156,7 +161,7 @@ public class UserService {
 		return model;
 	}
 
-	public ModelAndView editprofile(ModelAndView model, HttpServletRequest request) {
+	public ModelAndView editprofile(ModelAndView model) {
 		HttpSession session = request.getSession(false);
 		if (session != null) {
 			model.setViewName("EditP");
@@ -168,7 +173,7 @@ public class UserService {
 		return model;
 	}
 
-	public ModelAndView addtocart(ModelAndView model, HttpServletRequest request, YCartBean cart) {
+	public ModelAndView addtocart(ModelAndView model, YCartBean cart) {
 		HttpSession session = request.getSession(false);
 		Boolean flag = false;
 		if (session != null) {
@@ -205,7 +210,7 @@ public class UserService {
 		return model;
 	}
 
-	public ModelAndView yourcart(ModelAndView model, HttpServletRequest request) {
+	public ModelAndView yourcart(ModelAndView model) {
 		HttpSession session = request.getSession(false);
 		UserBean verify = (UserBean) session.getAttribute("user");
 		if (verify == null) {
@@ -228,9 +233,10 @@ public class UserService {
 		return model;
 	}
 
-	public ModelAndView orders(ModelAndView model, HttpServletRequest request) {
+	public ModelAndView orders(ModelAndView model) {
 		HttpSession session = request.getSession(false);
 //		if (session != null) {
+		UserBean user = getUserBean();
 //			UserBean user = (UserBean) session.getAttribute("user");
 //			user = ur.findByName1(user.getName()).get(0);
 //			session.setAttribute("transaction", user.getTransactions());
@@ -242,17 +248,16 @@ public class UserService {
 		return model;
 	}
 
-	public ModelAndView pay(ModelAndView model, HttpServletRequest request, String address, String newaddress,
-			Integer total) {
-		HttpSession session = request.getSession(false);
-		UserBean verify = (UserBean) session.getAttribute("user");
-		if (verify == null) {
-			model.setViewName("LoginPage");
-			model.addObject("message", "Please login to place your order");
-			return model;
-		}
-		if (session != null) {
-			UserBean user = (UserBean) session.getAttribute("user");
+	public ModelAndView pay(ModelAndView model, String address, String newaddress, Integer total) {
+	//	UserBean user = getUserBean();
+	//	UserBean verify = (UserBean) session.getAttribute("user");
+//		if (user == null) {
+//			model.setViewName("LoginPage");
+//			model.addObject("message", "Please login to place your order");
+//			return model;
+//		}
+//	if (user != null) {
+			UserBean user = getUserBean();
 			TransactionBean tb = new TransactionBean();
 			List<ProductBean> products = pr.findAll();
 			List<YCartBean> cart = user.getShoppingcart();
@@ -324,13 +329,13 @@ public class UserService {
 			user.setTransactions(transactions);
 			ur.save(user);
 			String day = LocalDate.now().plusDays(1).format(DateTimeFormatter.ofPattern("dd-MMM-yyyy"));
-			session.setAttribute("tb", tb);
-			session.setAttribute("day", day);
+			model.addObject("tb", tb);
+			model.addObject("day", day);
 			model.setViewName("CheckOut");
-		} else {
-			model.setViewName("LoginPage");
-			model.addObject("message", "Session expired, Please login again!");
-		}
+//		} else {
+//			model.setViewName("LoginPage");
+//			model.addObject("message", "Session expired, Please login again!");
+//		}
 		return model;
 
 	}

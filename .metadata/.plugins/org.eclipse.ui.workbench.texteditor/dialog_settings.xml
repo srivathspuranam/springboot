@@ -6,8 +6,9 @@
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
-		<item key="selection" value="pid"/>
+		<item key="selection" value=""/>
 		<list key="findhistory">
+			<item value="logout"/>
 			<item value="pid"/>
 			<item value="System.out.println"/>
 			<item value="println"/>
@@ -22,7 +23,6 @@
 			<item value="customer"/>
 			<item value="customerRepository"/>
 			<item value="tx"/>
-			<item value="mav"/>
 		</list>
 		<list key="replacehistory">
 			<item value=""/>

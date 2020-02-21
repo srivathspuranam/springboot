@@ -29,9 +29,8 @@ public class loginsecure extends WebSecurityConfigurerAdapter {
 		http
 		.csrf().disable()
 		.authorizeRequests()
-		.antMatchers("/","/login","register").permitAll()
-		.antMatchers("/h2/*").permitAll()
-		.anyRequest().authenticated()
+		.antMatchers("/","/login","/register","/h2/**").permitAll()
+	     .anyRequest().authenticated()
 		.and()
 		.formLogin()
 		.loginProcessingUrl("/login")
@@ -41,8 +40,7 @@ public class loginsecure extends WebSecurityConfigurerAdapter {
 		.and()
         .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login");
 	http.headers().frameOptions().disable();
-	}
-	
+	} 
 	
 
 	@Bean

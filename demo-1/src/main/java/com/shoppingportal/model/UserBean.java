@@ -1,7 +1,6 @@
 
 package com.shoppingportal.model;
 
-import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -10,19 +9,18 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
-import org.apache.jasper.tagplugins.jstl.core.Set;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-
-import javassist.compiler.ast.NewExpr;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 @Entity
 public class UserBean {
+
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
 	private String name;
 	private String password;
 	private String rpassword;
@@ -30,16 +28,29 @@ public class UserBean {
 	private String role;
 	private Long mobilenumber;
 	private String address;
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    
+	@OneToMany
+	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<YCartBean> shoppingcart;
-	@OneToMany(cascade = CascadeType.ALL)
+
+	@OneToMany
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@JoinColumn(name = "user_id", referencedColumnName = "id")
 	private List<TransactionBean> Transactions;
 
 	@Override
 	public String toString() {
-		return "UserBean [name=" + name + ", password=" + password + ", rpassword=" + rpassword + ", date=" + date
-				+ ", role=" + role + ", mobilenumber=" + mobilenumber + ", address=" + address + ", shoppingcart="
-				+ shoppingcart + ", Transactions=" + Transactions + "]";
+		return "UserBean [id=" + id + ", name=" + name + ", password=" + password + ", rpassword=" + rpassword
+				+ ", date=" + date + ", role=" + role + ", mobilenumber=" + mobilenumber + ", address=" + address
+				+ ", shoppingcart=" + shoppingcart + ", Transactions=" + Transactions + "]";
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public String getName() {

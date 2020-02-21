@@ -43,11 +43,11 @@ public class UserController {
 //		return model;
 //	}
 
-	@GetMapping("/logout")
-	public ModelAndView logout(ModelAndView model, HttpServletRequest request) {
-		model = us.logout(model, request);
-		return model;
-	}
+//	@GetMapping("/logout")
+//	public ModelAndView logout(ModelAndView model) {
+//		model = us.logout(model);
+//		return model;
+//	}
 
 	@GetMapping("/register")
 	public ModelAndView register(ModelAndView model) {
@@ -56,53 +56,50 @@ public class UserController {
 	}
 
 	@PostMapping("/register")
-	public ModelAndView register(UserBean ub, ModelAndView model, HttpServletRequest request) {
-		model = us.register(ub, model, request);
-
+	public ModelAndView register(UserBean ub, ModelAndView model) {
+		model = us.register(ub, model);
 		return model;
 	}
 
 	@GetMapping("/dashboard")
-	public ModelAndView dashboard(ModelAndView model, HttpServletRequest request) {
-		model = us.dashboard(model, request);
+	public ModelAndView dashboard(ModelAndView model) {
+		model = us.dashboard(model);
 		return model;
 	}
 
 	@GetMapping("/profile")
-	public ModelAndView profile(ModelAndView model, HttpServletRequest request, UserBean ub) {
-		model = us.profile(ub, model, request);
+	public ModelAndView profile(ModelAndView model, UserBean ub) {
+		model = us.profile(ub, model);
 		return model;
 	}
 
 	@GetMapping("editprofile")
-	public ModelAndView editprofile(ModelAndView model, HttpServletRequest request) {
-		model = us.editprofile(model, request);
+	public ModelAndView editprofile(ModelAndView model) {
+		model = us.editprofile(model);
 		return model;
 	}
 
 	@GetMapping("/orders")
-	public ModelAndView orders(ModelAndView model, HttpServletRequest request) {
-		model = us.orders(model, request);
+	public ModelAndView orders(ModelAndView model) {
+		model = us.orders(model);
 		return model;
 	}
 
 	@PostMapping("/addtocart")
-	public ModelAndView addtocart(ModelAndView model, HttpServletRequest request, YCartBean cart) {
-		model = us.addtocart(model, request, cart);
+	public ModelAndView addtocart(ModelAndView model, YCartBean cart) {
+		model = us.addtocart(model, cart);
 		return model;
 	}
 
 	@GetMapping("/yourcart")
-	public ModelAndView yourcart(ModelAndView model, HttpServletRequest request) {
-		model = us.yourcart(model, request);
+	public ModelAndView yourcart(ModelAndView model) {
+		model = us.yourcart(model);
 		return model;
 	}
 
 	@PostMapping("/pay")
-	public ModelAndView pay(ModelAndView model, HttpServletRequest request, String address, String newaddress,
-			Integer total) {
-		model = us.pay(model, request, address, newaddress, total);
-		System.out.println(address + newaddress + total);
+	public ModelAndView pay(ModelAndView model, String address, String newaddress, Integer total) {
+		model = us.pay(model, address, newaddress, total);
 		return model;
 	}
 

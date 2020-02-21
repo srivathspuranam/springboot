@@ -85,46 +85,46 @@
 		<tr>
 			<th>Product Id</th>
 			<th>Name</th>
-			<c:if test="${user.role != 'Admin'}">
+			<sec:authorize access="hasRole('Customer')">
 				<th>Quantity</th>
-			</c:if>
+			</sec:authorize>
 			<th>About</th>
 			<th>Price</th>
-			<c:if test="${user.role == 'Admin'}">
+			<sec:authorize access="hasRole('Admin')">
 				<th>Stock Available</th>
-			</c:if>
+			</sec:authorize>
 
 		</tr>
 		<c:forEach items="${products}" var="product" varStatus="roll">
 			<tr>
 				<td style="text-align: center;" id="id${roll.count}">${product.productid}</td>
 				<td style="text-align: center;" id="name${roll.count}">${product.productname}</td>
-				<c:if test="${user.role != 'Admin'}">
+				<sec:authorize access="hasRole('Customer')">
 					<td style="text-align: center;">
 						<button id="minus${roll.count}" class="minus">-</button>
 						<input type="text" id="quantity${roll.count}" value="0" size="1">
 						<button id="add${roll.count}" class="add">+</button>
 					</td>
-				</c:if>
+				</sec:authorize>
 				<td style="text-align: center;" id="about">${product.about}</td>
 				<td style="text-align: center;" id="price${roll.count}">${product.productcost}</td>
-				<c:if test="${user.role == 'Admin'}">
+				<sec:authorize access="hasRole('Admin')">
 					<td style="text-align: center;" id="stock${roll.count}">${product.productstock}</td>
-				</c:if>
+				</sec:authorize>
 
-				<c:if test="${user.role != 'Admin'}">
+				<sec:authorize access="hasRole('Customer')">
 					<td style="text-align: center;"><input type="button" value="Add to cart" id="tocart${roll.count}"
 							class="tocart">
 					</td>
-				</c:if>
+				</sec:authorize>
 
 
-				<c:if test="${user.role == 'Admin'}">
+				<sec:authorize access="hasRole('Admin')">
 					<td style="text-align: center;"><input type="button"
 							onclick="window.location='editproduct?id=${product.productid}';" value="Edit"></td>
 					<td style="text-align: center;"><input type="button" id="delete${roll.count}" value="delete"
 							class="delete"></td>
-				</c:if>
+				</sec:authorize>
 			</tr>
 		</c:forEach>
 	</table>

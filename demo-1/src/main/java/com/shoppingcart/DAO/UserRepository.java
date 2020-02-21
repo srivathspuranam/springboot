@@ -25,4 +25,6 @@ public interface UserRepository extends JpaRepository<UserBean, String> {
 	@Query("from UserBean ub where ub.address=?1")
 	UserBean getAddress(String address);
 
+	Optional<UserBean> findById(Integer id);
+
 }

@@ -28,6 +28,10 @@ public class UserDetailsImpl implements UserDetails {
 		return grantedAuthority;
 	}
 
+	public Integer getId() {
+		return user.getId();
+	}
+	
 	@Override
 	public String getPassword() {
 		return user.getPassword();
@@ -57,9 +61,9 @@ public class UserDetailsImpl implements UserDetails {
 	public boolean isEnabled() {
 		return true;
 	}
-	
+
 	public List<TransactionBean> getTransactions() {
 		return user.getTransactions();
-	}	
+	}
 
 }

@@ -28,32 +28,32 @@ public class ProductController {
 	}
 
 	@PostMapping("/addproduct")
-	public ModelAndView addproduct(ModelAndView model, HttpServletRequest request, ProductBean pb) {
-		model = ps.addproduct(model, request, pb);
+	public ModelAndView addproduct(ModelAndView model, ProductBean pb) {
+		model = ps.addproduct(model, pb);
 		return model;
 	}
 
 	@GetMapping("/editproduct")
-	public ModelAndView editproduct(ModelAndView model, HttpServletRequest request, Integer id) {
-		model = ps.editproduct(model, request, id);
+	public ModelAndView editproduct(ModelAndView model, Integer id) {
+		model = ps.editproduct(model, id);
 		return model;
 	}
 
 	@GetMapping("deleteproduct")
-	public ModelAndView deleteproduct(ModelAndView model, HttpServletRequest request, Integer id) {
-		model = ps.deleteproduct(model, request, id);
+	public ModelAndView deleteproduct(ModelAndView model, Integer id) {
+		model = ps.deleteproduct(model, id);
 		return model;
 	}
 
 	@GetMapping("/products")
-	public ModelAndView products(ModelAndView model, HttpServletRequest request) {
-		model = ps.products(model, request);
+	public ModelAndView products(ModelAndView model) {
+		model = ps.products(model);
 		return model;
 	}
 
 	@PostMapping("/removeproduct")
-	public void removeproduct(YCartBean ycart, HttpServletRequest request) {
-		ps.removeproduct(ycart, request);
+	public void removeproduct(YCartBean ycart) {
+		ps.removeproduct(ycart);
 	}
 
 }

@@ -26,12 +26,12 @@
 			Mobile Number: <input type="text" name="mobilenumber" required><br><br>
 			Address: <input type="text" name="address"><br><br>
 
-			<c:if test="${user.role == 'Admin'}">
+			<sec:authorize access="hasRole('Admin')">
 				<input type="text" name="role" value="Admin" hidden>
-			</c:if>
-			<c:if test="${user.role != 'Admin'}">
+			</sec:authorize>
+			<sec:authorize access="hasRole('Customer')">
 				<input type="text" name="role" value="Customer" hidden>
-			</c:if>
+			</sec:authorize>
 
 		</h3>
 
